@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  #Microsservice
+  server:
+    container_name: RinhaJava
+    build: .
+    environment:
+      db_internal_url: ""
+      db_user: "user"
+      db_password: "password"
+    ports:
+      - "8081:8080"
