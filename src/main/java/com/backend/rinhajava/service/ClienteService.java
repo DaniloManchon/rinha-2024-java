@@ -20,23 +20,27 @@ public class ClienteService {
     @Autowired
     ClienteRepository clienteRepository;
 
-    public Optional<ClienteModel> validaCliente (int id) {
-        return Optional.ofNullable((ClienteModel) clienteRepository.findById(id));
+    public Optional<ClienteModel> validaCliente (int idCliente) {
+        return Optional.ofNullable((ClienteModel) clienteRepository.findByidCliente(idCliente));
     }
 
     public ResponseEntity<ClienteModel> criarCliente(ClienteModel clienteModel){
-        if(validaCliente(clienteModel.getId()).isPresent()){
+        if(validaCliente(clienteModel.getIdCliente()).isPresent()){
             log.warn("Cliente já cadastrado, id: " + clienteModel.getId());
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         } else {
             ClienteModel _clientModel = clienteRepository.save(
                     new ClienteModel(
-                            clienteModel.getId(),
+                            clienteModel.getIdCliente(),
                             clienteModel.getLimite(),
                             clienteModel.getSaldoInicial(),
-                            clienteModel.getTransacaoList()
+                            null
                     )
+
             );
+            log.debug(clienteModel.getId() +
+                clienteModel.getLimite() +
+                clienteModel.getSaldoInicial());
             log.info("Cliente "+ clienteModel.getId() +" cadastrado com sucesso");
             return new ResponseEntity<>(_clientModel, HttpStatus.CREATED);
         }

@@ -1,5 +1,8 @@
 package com.backend.rinhajava.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,18 +14,28 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Entity
 public class ClienteModel {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @Column
-    private double limite;
+    @JsonAlias("id")
+    private int idCliente;
     @Column
-    private double saldoInicial;
+    private int limite;
+    @Column
+    private int saldoInicial;
 
     //relação de muitas transacoes para um unico cliente
     @Nullable
     @OneToMany
     private List<TransacaoModel> transacaoList;
+
+    public ClienteModel(int idCliente, int limite, int saldoInicial, @Nullable List<TransacaoModel> transacaoList) {
+        this.idCliente = idCliente;
+        this.limite = limite;
+        this.saldoInicial = saldoInicial;
+        this.transacaoList = transacaoList;
+    }
 }
