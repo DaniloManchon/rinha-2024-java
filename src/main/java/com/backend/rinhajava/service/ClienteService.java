@@ -29,7 +29,14 @@ public class ClienteService {
             log.warn("Cliente já cadastrado, id: " + clienteModel.getId());
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         } else {
-            ClienteModel _clientModel = clienteRepository.save(new ClienteModel(clienteModel.getId(), clienteModel.getLimite(), clienteModel.getSaldoInicial()));
+            ClienteModel _clientModel = clienteRepository.save(
+                    new ClienteModel(
+                            clienteModel.getId(),
+                            clienteModel.getLimite(),
+                            clienteModel.getSaldoInicial(),
+                            clienteModel.getTransacaoList()
+                    )
+            );
             log.info("Cliente "+ clienteModel.getId() +" cadastrado com sucesso");
             return new ResponseEntity<>(_clientModel, HttpStatus.CREATED);
         }
